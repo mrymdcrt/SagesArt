@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Macondo:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Qwitcher+Grypen&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sagés Art</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Playfair Display", serif;
+        background: #000;
+        color: #fff;
+        line-height: 1.6;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      ul {
+        list-style: none;
+      }
+      hr {
+        border: none;
+        height: 23px;
+        background-color: #000;
+      }
+      /* --- NAVBAR --- */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+      }
+      header nav ul {
+        display: flex;
+        gap: 2rem;
+      }
+      header nav a {
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .lang-switch {
+        cursor: pointer;
+        font-size: 0.9rem;
+        border: 1px solid #fff;
+        padding: 0.3rem 0.6rem;
+        border-radius: 5px;
+      }
+
+      /* --- BURGER BUTTON --- */
+      .burger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+      }
+      .burger span {
+        width: 25px;
+        height: 3px;
+        background: #fff;
+        border-radius: 3px;
+      }
+      .tagline {
+        font-family: "Libre Baskerville", cursive;
+      }
+      .hero-images img {
+        width: 100%;
+        height: auto; /* garde les proportions */
+        display: block; /* évite les petits espaces sous les images */
+        margin-bottom: 1rem; /* espace entre les images */
+        border-radius: 10px; /* optionnel : coins arrondis */
+      }
+      .logo {
+        font-family: "Qwitcher Grypen", cursive;
+        font-size: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
+        header nav {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background: rgba(0, 0, 0, 0.9);
+          width: 100%;
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          padding: 1rem 0;
+        }
+        header nav ul {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        header nav.active {
+          display: flex;
+        }
+        .burger {
+          display: flex;
+        }
+      }
+
+      /* --- HERO --- */
+      .hero {
+        height: 100vh;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .hero h1 {
+        font-family: Macondo, cursive;
+        font-size: 3.5rem;
+        letter-spacing: 2px;
+      }
+      .hero p {
+        font-size: 1.2rem;
+        margin-top: 1rem;
+      }
+
+      section {
+        padding: 5rem 2rem;
+        max-width: 1200px;
+        margin: auto;
+      }
+      section h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+      }
+
+      /* --- GALLERY --- */
+      .filters {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .filters button {
+        background: #fff;
+        color: #000;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s;
+      }
+      .filters button:hover {
+        background: #ddd;
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+      .gallery img {
+        width: 100%;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+      .gallery img:hover {
+        transform: scale(1.05);
+      }
+
+      .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .lightbox img {
+        max-width: 90%;
+        max-height: 80%;
+        border-radius: 10px;
+      }
+
+      /* --- CONTACT --- */
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 600px;
+        margin: auto;
+      }
+      input,
+      textarea {
+        padding: 0.8rem;
+        border: none;
+        border-radius: 5px;
+      }
+      button.submit-btn {
+        background: #fff;
+        color: #000;
+        padding: 0.8rem;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button.submit-btn:hover {
+        background: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <header>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      />
+      <div class="logo">SAGÉS ART</div>
+      <div class="burger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+      <nav id="navbar">
+        <ul>
+          <li><a href="#home" data-fr="Accueil" data-en="Home">Accueil</a></li>
+          <li>
+            <a href="#gallery" data-fr="Galerie" data-en="Gallery">Galerie</a>
+          </li>
+          <li>
+            <a href="#about" data-fr="À propos" data-en="About">À propos</a>
+          </li>
+          <li>
+            <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="lang-switch" onclick="switchLang()">EN</div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div>
+        <h1 data-fr="SAGÉS" data-en="SAGÉS">SAGÉS</h1>
+        <p
+          class="tagline"
+          data-fr="De la rue à la toile, du chaos à l'harmonie."
+          data-en="From the streets to the canvas, from chaos to harmony."
+        >
+          De la rue à la toile, du chaos à l'harmonie.
+        </p>
+      </div>
+    </section>
+
+    <div class="hero-images">
+      <img src="Sages1.webp" alt="Artwork 1" />
+      <img src="Sages2.webp" alt="Artwork 2" />
+      <img src="Sages3.webp" alt="Artwork 3" />
+      <img src="Sages4.webp" alt="Artwork 4" />
+      <img src="Sages5.webp" alt="Artwork 5" />
+      <img src="Sages6.webp" alt="Artwork 6" />
+      <img src="Sages8.webp" alt="Artwork 8" />
+      <img src="Sages9.webp" alt="Artwork 9" />
+      <img src="Sages10.webp" alt="Artwork 10" />
+      <img src="Sages11.webp" alt="Artwork 11" />
+      <img src="Sages12.webp" alt="Artwork 12" />
+      <img src="Sages13.webp" alt="Artwork 13" />
+      <img src="Sages14.webp" alt="Artwork 14" />
+      <img src="Sages15.webp" alt="Artwork 15" />
+      <img src="Sages7.webp" alt="Artwork 7" />
+      <img src="Sages16.webp" alt="Artwork16" />
+    </div>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+      <h2 data-fr="Galerie" data-en="Gallery">Galerie</h2>
+
+      <!-- Filtres -->
+      <div class="filters">
+        <button
+          onclick="filterStyle('style1')"
+          data-fr="Style 1"
+          data-en="Style 1"
+        >
+          Style 1
+        </button>
+        <button
+          onclick="filterStyle('style2')"
+          data-fr="Style 2"
+          data-en="Style 2"
+        >
+          Style 2
+        </button>
+      </div>
+
+      <div class="gallery">
+        <!-- Style 1 -->
+        <img src="Image1.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art3.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art4.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art5.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art6.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art7.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art8.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art9.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art20.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art21.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art22.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art17.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art18.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art19.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art14.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art15.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art16.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art13.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art12.webp" alt="Artwork Style 1" data-style="style1" />
+        <img src="art10.webp" alt="Artwork Style 1" data-style="style1" />
+
+        <!-- Style 2 -->
+        <img src="abi1.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi2.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi3.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi7.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi10.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi6.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi4.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi8.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi9.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi5.webp" alt="Artwork Style 2" data-style="style2" />
+        <img src="abi11.webp" alt="Artwork Style 2" data-style="style2" />
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2 data-fr="À propos" data-en="About">À propos</h2>
+
+      <p
+        class="about-text"
+        data-fr="Né en 1974, Sagés est un artiste français domicilié au Sénégal, qui peint depuis son adolescence. D’abord affilié à la mouvance graffiti, dont il fut l’un des pionniers dans le Nord de la France, il s’émancipe rapidement des codes du street art pour développer un style plus personnel. Son univers mêle influences urbaines et références culturelles variées, notamment celles de l’Afrique, qu’il chérit particulièrement. Il a participé à de nombreux festivals d’art urbain et exposé ses toiles à plusieurs occasions.
+"
+        data-en="Born in 1974, Sagés is a French artist living in Senegal who has been painting since his adolescence. Initially associated with the graffiti movement, in which he was one of the pioneers in northern France, he quickly broke away from street art conventions to develop a more personal style, blending urban influences with diverse cultural references, notably those of Africa, which he cherishes. He has had the opportunity to participate in numerous urban art festivals and to exhibit his paintings.
+"
+      >
+        Né en 1974, Sagés est un artiste français domicilié au Sénégal, qui
+        peint depuis son adolescence. D’abord affilié à la mouvance graffiti,
+        dont il fut l’un des pionniers dans le Nord de la France, il s’émancipe
+        rapidement des codes du street art pour développer un style plus
+        personnel. Son univers mêle influences urbaines et références
+        culturelles variées, notamment celles de l’Afrique, qu’il chérit
+        particulièrement. Il a participé à de nombreux festivals d’art urbain et
+        exposé ses toiles à plusieurs occasions.
+      </p>
+      <!-- Style 1 -->
+      <hr />
+      <p>Style 1</p>
+      <p
+        class="about-text"
+        data-style="style1"
+        data-fr="Les œuvres de Sagés proposent un voyage fascinant dans l’univers de l’abstraction géométrique et de l’art cosmique. Elles allient à la fois la rigueur de la symétrie et l’explosion de la couleur, créant un langage visuel qui interpelle à la fois la raison et l’imaginaire.
+
+Le dialogue entre chaos et ordre
+
+Ces œuvres reposent sur une tension fertile entre deux forces opposées :
+
+Le chaos, incarné par l’arrière-plan diffus, presque aléatoire, où les couleurs se mélangent en tourbillons et éclats.
+
+L’ordre, exprimé par la régularité géométrique, la symétrie parfaite des formes qui semblent surgir de ce chaos pour y imposer une structure.
+
+Ce dialogue entre désordre et organisation fait écho à la manière dont l’humanité tente de trouver du sens et de l’harmonie dans un monde parfois imprévisible.
+
+Une ouverture vers l’infini
+
+En définitive, ces œuvres peuvent être perçues comme des fenêtres sur l’infini. Elles traduisent une vision cosmique, une recherche d’unité entre le microcosme (la géométrie intime des formes) et le macrocosme (l’immensité de l’espace). Elles rappellent que l’art peut être un pont entre le rationnel et le spirituel, entre la science des formes et la poésie des couleurs."
+        data-en="The works of Sagés offer a fascinating journey into the universe of geometric abstraction and cosmic art. They combine both the rigor of symmetry and the explosion of color, creating a visual language that engages both reason and imagination.
+
+The dialogue between chaos and order
+
+These works are based on a fertile tension between two opposing forces:
+
+Chaos, embodied by the diffuse, almost random background, where colors blend in swirls and bursts.
+
+Order, expressed through geometric regularity, the perfect symmetry of shapes that seem to emerge from this chaos to impose structure.
+
+This dialogue between disorder and organization echoes the way humanity tries to find meaning and harmony in a sometimes unpredictable world.
+
+An opening towards infinity
+
+Ultimately, these works can be seen as windows onto infinity. They convey a cosmic vision, a search for unity between the microcosm (the intimate geometry of forms) and the macrocosm (the vastness of space). They remind us that art can be a bridge between the rational and the spiritual, between the science of forms and the poetry of colors."
+      >
+        Les œuvres de Sagés proposent un voyage fascinant dans l’univers de
+        l’abstraction géométrique et de l’art cosmique. Elles allient à la fois
+        la rigueur de la symétrie et l’explosion de la couleur, créant un
+        langage visuel qui interpelle à la fois la raison et l’imaginaire. Le
+        dialogue entre chaos et ordre Ces œuvres reposent sur une tension
+        fertile entre deux forces opposées : Le chaos, incarné par
+        l’arrière-plan diffus, presque aléatoire, où les couleurs se mélangent
+        en tourbillons et éclats. L’ordre, exprimé par la régularité
+        géométrique, la symétrie parfaite des formes qui semblent surgir de ce
+        chaos pour y imposer une structure. Ce dialogue entre désordre et
+        organisation fait écho à la manière dont l’humanité tente de trouver du
+        sens et de l’harmonie dans un monde parfois imprévisible. En définitive,
+        ces œuvres peuvent être perçues comme des fenêtres sur l’infini. Elles
+        traduisent une vision cosmique, une recherche d’unité entre le
+        microcosme (la géométrie intime des formes) et le macrocosme
+        (l’immensité de l’espace). Elles rappellent que l’art peut être un pont
+        entre le rationnel et le spirituel, entre la science des formes et la
+        poésie des couleurs.
+      </p>
+      <hr />
+
+      <!-- Style 2 -->
+      <p>Style 2</p>
+      <p
+        class="about-text"
+        data-style="style2"
+        data-fr="Sagés propose un univers où la rue dialogue avec le fantastique, où le chaos devient harmonie. Les lignes nerveuses, les éclats d’encre, les contrastes marqués donnent une impression de mouvement permanent, comme si les images refusaient de rester figées. On y retrouve la brutalité de la ville, la vitesse, la débrouillardise, mais aussi une poésie viscérale, presque sauvage. L’artiste mêle des références populaires (le taxi, les graffitis, les symboles politiques ou culturels) à des représentations organiques (tentacules, squelettes, ailes), créant des fusions improbables qui interrogent le spectateur : qu’est-ce qui est vivant, qu’est-ce qui est mécanique, qu’est-ce qui est libre ? Au-delà de la virtuosité technique, ce style dégage une énergie contestataire et spirituelle. Il traduit la tension entre survie et créativité, entre chaos et beauté, entre désordre urbain et aspiration à l’envol. En somme, ses œuvres sont des manifestes graphiques : elles ne cherchent pas à rassurer, mais à réveiller."
+        data-en="Sagès offers a universe where the streets converse with the fantastic, where chaos turns into harmony. Nervous lines, splashes of ink, and sharp contrasts create the impression of constant motion, as if the images refuse to remain still. Here we find the brutality of the city, its speed, its resourcefulness, but also a visceral, almost savage poetry. The artist blends popular references (taxis, graffiti, political or cultural symbols) with organic forms (tentacles, skeletons, wings), forging improbable fusions that question the viewer: what is alive, what is mechanical, what is free? Beyond technical mastery, this style radiates a spirit that is both rebellious and spiritual. It conveys the tension between survival and creativity, between chaos and beauty, between urban disorder and the longing to take flight. In essence, these works are graphic manifestos: they are not meant to soothe, but to awaken."
+      >
+        Sagés propose un univers où la rue dialogue avec le fantastique, où le
+        chaos devient harmonie. Les lignes nerveuses, les éclats d’encre, les
+        contrastes marqués donnent une impression de mouvement permanent, comme
+        si les images refusaient de rester figées. On y retrouve la brutalité de
+        la ville, la vitesse, la débrouillardise, mais aussi une poésie
+        viscérale, presque sauvage. L’artiste mêle des références populaires (le
+        taxi, les graffitis, les symboles politiques ou culturels) à des
+        représentations organiques (tentacules, squelettes, ailes), créant des
+        fusions improbables qui interrogent le spectateur : qu’est-ce qui est
+        vivant, qu’est-ce qui est mécanique, qu’est-ce qui est libre ? Au-delà
+        de la virtuosité technique, ce style dégage une énergie contestataire et
+        spirituelle. Il traduit la tension entre survie et créativité, entre
+        chaos et beauté, entre désordre urbain et aspiration à l’envol. En
+        somme, ses œuvres sont des manifestes graphiques : elles ne cherchent
+        pas à rassurer, mais à réveiller.
+      </p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2 data-fr="Contact" data-en="Contact">Contact</h2>
+      <form id="contact-form">
+        <input type="text" name="from_name" placeholder="Nom / Name" required />
+        <input type="email" name="reply_to" placeholder="Email" required />
+        <textarea
+          name="message"
+          rows="5"
+          placeholder="Message"
+          required
+        ></textarea>
+        <button
+          type="submit"
+          class="submit-btn"
+          data-fr="Envoyer"
+          data-en="Send"
+        >
+          Envoyer
+        </button>
+      </form>
+    </section>
+
+    <script>
+      // --- Language Switch ---
+      let currentLang = "fr";
+      function switchLang() {
+        currentLang = currentLang === "fr" ? "en" : "fr";
+        document.querySelectorAll("[data-fr]").forEach((el) => {
+          el.textContent = el.getAttribute(`data-${currentLang}`);
+        });
+        document.querySelector(".lang-switch").textContent =
+          currentLang === "fr" ? "EN" : "FR";
+      }
+
+      function toggleMenu() {
+        document.getElementById("navbar").classList.toggle("active");
+      }
+
+      // --- Filtrage des styles ---
+      function filterStyle(style) {
+        document.querySelectorAll(".gallery img").forEach((img) => {
+          if (style === "all" || img.dataset.style === style) {
+            img.style.display = "block";
+          } else {
+            img.style.display = "none";
+          }
+        });
+      }
+
+      // --- Lightbox ---
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = lightbox.querySelector("img");
+      document.querySelectorAll(".gallery img").forEach((img) => {
+        img.addEventListener("click", () => {
+          lightbox.style.display = "flex";
+          lightboxImg.src = img.src;
+        });
+      });
+      lightbox.addEventListener("click", () => {
+        lightbox.style.display = "none";
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        filterStyle("style1"); // ou "style2" ou "all"
+      });
+    </script>
+
+    <!-- LIGHTBOX -->
+
+    <!-- ================= EMAILJS ================= -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+      // Initialisation avec ta clé publique
+      emailjs.init("5iz50d2nmZLfHCavM");
+
+      document
+        .getElementById("contact-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          emailjs.sendForm("service_67sfsnj", "template_csq60kq", this).then(
+            () => {
+              alert("✅ Message envoyé avec succès !");
+              this.reset();
+            },
+            (error) => {
+              alert("❌ Erreur lors de l'envoi : " + JSON.stringify(error));
+            }
+          );
+        });
+    </script>
+
+    <footer>
+      <div class="socials">
+        <a href="https://instagram.com/sages2025" target="_blank">
+          <i class="fab fa-instagram"></i>
+        </a>
+
+        <a href="https://wa.me/33768741567" target="_blank">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
